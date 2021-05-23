@@ -1,0 +1,62 @@
+apuntes.txt
+
+
+Jason Web Token
+  Gnerar demandas entre dos clientes de manera segura
+
+  Trabaja con algoritmos de encriptación 
+
+  Requiere de un método para establecer el tipo de permiso que requiere, puede ser de registro, publico, privado, entre otros.
+
+  El poder lo obtiene de la Firma  
+
+Autenticación con JWT
+  Cuando usamos una autenticación tradicional se crea una sesión y el ID de esa sesión se almacena en una cookie del navegador, pero cuando utilizamos JWT firmamos un token y este se guarda en el navegador el cual permite a una SPA actualizarse sin refrescar la ventana.
+
+  En el proceso de Autenticación el server firma un   token
+  A partir de ese momento el cliente almacena el token  en memoria y en una cookie
+  Todos los request de ahí en adelante llevan el token
+
+    Ventajas de JWT
+
+      No requiere del backend para saber si está  autenticado porque lleva una firma (post   autenticación)
+      El backend puede recibir multiples request de   multiples clientes (sólo necesita saber si el token   está bien firmado)
+      El cliente conoce los permisos que tiene, por lo que  no los tiene que bajar de base de datos
+
+  Asignar un JWT
+    Se hace uso de una libreria llamada node jason web token que tiene un método llamado sign.
+
+      jwt.sign({ sub: user.id }, 'secret', options);
+
+    El primer atributo debe llevar el payload que esta construido por los claims que definamos.
+    El segundo debe recibir el 'secret' con que va a ser firmada la Firma.
+    El tercero son opciones extra del firmado del JWT.
+
+  Verificación del JWT
+    En la misma libreria encontramos el método verify
+
+      jwt.verify(token, 'secret', function(err, decoded){});
+
+    En el primer argunmento recibe el token que queremos verificar.
+    En el segundo recibe el 'secret'.
+    Y fnalmente un callback que va a regresar cuando el proceso termine.
+    
+    Instalación: npm i jsonwebtoken
+
+Cookies
+  Es un archivo creado por una pagina web que tiene pequeños pedazos de datos almacenados en él, su propósito principal es reconocer al usuario mediante el almacenamiento de su historial
+  
+  De sesión: son temporales y se borran cundo el tab o el navegador se cierran.
+
+  Persistentes: se usan para guardar información del interes del usuario.
+
+  Secure: almacenan datos de manera cifrada.
+
+Diferencias entre LS - SS - Cookies
+  El Local Storage tiene un almacenamiento máximo de 5MB y la información no se va con cada request al servidor, la información va a persistir aunque cerremos el navegador.
+
+  El Session Storage es similar al Local Storage solo que la información está disponible por pestaña o por la ventana del navegador. La información estará disponible solo en esa pestaña.
+
+  Las Cookies tienen solo un almacenamiento de 4KB, se les puede establecer un tiempo de expiración, la desventaja de usarlo es que al hacer request de imágenes o datos las cookies van junto con la petición.
+  
+  Si la información no es sensible podemos almacenarla en Local Storage o en Session Storage.
